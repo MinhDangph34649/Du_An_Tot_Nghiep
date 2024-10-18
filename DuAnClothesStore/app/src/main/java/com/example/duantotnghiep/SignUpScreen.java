@@ -94,7 +94,7 @@ public class SignUpScreen extends AppCompatActivity {
                     Toast.makeText(SignUpScreen.this, "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
                     edt_passup.requestFocus();
                 } else {
-                    // Đăng ký người dùng mới với Firebase
+
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(SignUpScreen.this, task -> {
                                 if (task.isSuccessful()) {
