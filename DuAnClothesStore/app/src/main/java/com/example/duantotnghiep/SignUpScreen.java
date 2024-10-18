@@ -34,9 +34,7 @@ public class SignUpScreen extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_up_screen);
 
-
         mAuth = FirebaseAuth.getInstance();
-
 
         hideup = findViewById(R.id.hideup);
         edt_passup = findViewById(R.id.edt_passup);
@@ -66,30 +64,44 @@ public class SignUpScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignUpScreen.this, SingInScreen.class));
-                finish();  // Dừng màn hình hiện tại để không quay lại màn hình SignUpScreen khi nhấn nút Back
+                finish();
             }
         });
+
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = edt_mailup.getText().toString();
-                String password = edt_passup.getText().toString();
+                String name = edt_nameup.getText().toString().trim();
+                String email = edt_mailup.getText().toString().trim();
+                String password = edt_passup.getText().toString().trim();
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(SignUpScreen.this, "Vui lòng nhập user & pass ", Toast.LENGTH_SHORT).show();
+                // Kiểm tra tên người dùng
+                if (name.isEmpty()) {
+                    Toast.makeText(SignUpScreen.this, "Vui lòng nhập tên!", Toast.LENGTH_SHORT).show();
+                    edt_nameup.requestFocus();  // Đặt con trỏ vào trường dữ liệu bị thiếu
+                }
+                // Kiểm tra email
+                else if (email.isEmpty()) {
+                    Toast.makeText(SignUpScreen.this, "Vui lòng nhập email!", Toast.LENGTH_SHORT).show();
+                    edt_mailup.requestFocus();
                 } else if (!isValidEmail(email)) {
-                    Toast.makeText(SignUpScreen.this, "Email phải có kí tự @ , Vui lòng nhập lại !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpScreen.this, "Email phải có kí tự @ , Vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+                    edt_mailup.requestFocus();
+                }
+                // Kiểm tra mật khẩu
+                else if (password.isEmpty()) {
+                    Toast.makeText(SignUpScreen.this, "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
+                    edt_passup.requestFocus();
                 } else {
                     // Đăng ký người dùng mới với Firebase
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(SignUpScreen.this, task -> {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(SignUpScreen.this, "Đăng kí thành công !", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(SignUpScreen.this, SingInScreen.class)); // Chuyển sang màn hình Sign In
+                                    Toast.makeText(SignUpScreen.this, "Đăng kí thành công!", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(SignUpScreen.this, SingInScreen.class));
                                     finish();
                                 } else {
-
                                     Toast.makeText(SignUpScreen.this, "Đăng kí thất bại =_= " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -103,5 +115,4 @@ public class SignUpScreen extends AppCompatActivity {
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         return email.matches(emailPattern);
     }
-    //
 }
