@@ -85,12 +85,12 @@ public class SignUpScreen extends AppCompatActivity {
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(SignUpScreen.this, task -> {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(SignUpScreen.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignUpScreen.this, "Registration successful !", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(SignUpScreen.this, SingInScreen.class)); // Chuyển sang màn hình Sign In
                                     finish();
                                 } else {
 
-                                    Toast.makeText(SignUpScreen.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignUpScreen.this, "Registration failed =_= " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
@@ -103,4 +103,5 @@ public class SignUpScreen extends AppCompatActivity {
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         return email.matches(emailPattern);
     }
+    //
 }
